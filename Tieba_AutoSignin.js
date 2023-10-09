@@ -18,6 +18,7 @@ function signTieBa(bduss, remarks) {
       "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 12_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/16A366"
     }
   })
+    .then(d => d.data)
     .then(async body => {
       let isSuccessResponse = body && body.no == 0 && body.error == "success" && body.data.tbs;
       if (!isSuccessResponse) {
@@ -68,6 +69,7 @@ function signBar(bar, tbs, bduss) {
       },
       body: `tbs=${tbs}&kw=${bar.forum_name}&ie=utf-8`
     })
+      .then(d => d.data)
       .then(json => {
         return json
       })
