@@ -59,7 +59,7 @@ function signTieBa(bduss, remarks) {
 // signBar
 function signBar(bar, tbs, bduss) {
   if (bar.is_sign != 1) { //未签到
-    const addResult = await axios("https://tieba.baidu.com/sign/add", {
+    return axios("https://tieba.baidu.com/sign/add", {
       method: 'POST',
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
@@ -68,7 +68,9 @@ function signBar(bar, tbs, bduss) {
       },
       body: `tbs=${tbs}&kw=${bar.forum_name}&ie=utf-8`
     })
-    return addResult
+      .then(json => {
+        return json
+      })
   }  
 }
 
