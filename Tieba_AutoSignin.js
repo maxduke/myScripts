@@ -23,20 +23,20 @@ function signTieBa(bduss, remarks) {
       let isSuccessResponse = body && body.no == 0 && body.error == "success" && body.data.tbs;
       if (!isSuccessResponse) {
         sendMessage.push('签到失败', (body && body.error) ? body.error : "接口数据获取失败")
-        return Promise.reject(sendMessage.join(', '))
+        return Promise.reject(sendMessage.join('\n'))
       }
 
       if (body.data.like_forum && body.data.like_forum.length > 0) {
         for await (bar of body.data.like_forum) {
           if (bar.is_sign == 1) {
             sendMessage.push(
-              `${bar.forum_name} 已签到: 等级 ${bar.user_level} ,经验 ${bar.user_exp}`
+              `[${bar.forum_name}]已签到: 等级 ${bar.user_level}, 经验 ${bar.user_exp}`
             )
           } else {
             try {
               const addResult = await signBar(bar, body.data.tbs, bduss)
               sendMessage.push(
-                `${bar.forum_name}签到成功: 获得 ${addResult.data.uinfo.cont_sign_num} 积分,第 ${addResult.data.uinfo.user_sign_rank} 个签到`
+                `[${bar.forum_name}]签到成功: 获得 ${addResult.data.uinfo.cont_sign_num} 积分, 第 ${addResult.data.uinfo.user_sign_rank} 个签到`
               )
             } catch (e) {
               sendMessage.push(`${bar.forum_name}签到失败:`, e)
@@ -45,15 +45,15 @@ function signTieBa(bduss, remarks) {
         }
       } else {
         sendMessage.push('签到失败', "请确认您有关注的贴吧")
-        return Promise.reject(sendMessage.join(', '))
+        return Promise.reject(sendMessage.join('\n'))
       }
 
-      return sendMessage.join(', ')
+      return sendMessage.join('\n')
     })
     .catch(e => {
       sendMessage.push('签到失败')
       sendMessage.push(e.message)
-      return Promise.reject(sendMessage.join(', '))
+      return Promise.reject(sendMessage.join('\n'))
     })
 }
 
@@ -116,7 +116,7 @@ async function getBDUSS() {
   for await (bduss of bdussArray) {
     let remarks = bduss.remarks || `账号${index}`
     try {
-      const sendMessage = await signTieBa(bduss, remarks)
+      const sendMessage = await signTieBa(bduss.value, remarks)
       console.log(sendMessage)
       console.log('\n')
       message.push(sendMessage)
