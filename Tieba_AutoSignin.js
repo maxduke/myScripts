@@ -60,6 +60,12 @@ function signTieBa(bduss, remarks) {
 // signBar
 function signBar(bar, tbs, bduss) {
   if (bar.is_sign != 1) { //未签到
+    // 创建一个新的FormData实例
+    var formData = new FormData();    
+    // 添加键值对
+    formData.append('tbs', tbs)
+    formData.append('kw', bar.forum_name)
+    formData.append('ie', 'utf-8')
     return axios("https://tieba.baidu.com/sign/add", {
       method: 'POST',
       headers: {
@@ -67,7 +73,7 @@ function signBar(bar, tbs, bduss) {
         Cookie: `BDUSS=${bduss}`,
         "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 10_1_1 like Mac OS X; zh-CN) AppleWebKit/537.51.1 (KHTML, like Gecko) Mobile/14B100 UCBrowser/10.7.5.650 Mobile"
       },
-      body: `tbs=${tbs}&kw=${bar.forum_name}&ie=utf-8`
+      data: formData
     })
       .then(d => d.data)
       .then(json => {
