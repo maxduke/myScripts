@@ -1,9 +1,9 @@
 /*
-cron "0 9 * * *" Tieba_AUtoSignin.js, tag=Tieba签到
+cron "11 8,9 * * *" Tieba_AUtoSignin.js, tag=Tieba签到
 */
 
 const axios = require('axios')
-const { initInstance, getEnv, updateCkEnv } = require('./qlApi.js')
+const { getEnv } = require('./qlApi.js')
 const notify = require('./sendNotify')
 
 //签到列表
@@ -84,16 +84,7 @@ function signBar(bar, tbs, bduss) {
 
 // 获取环境变量
 async function getBDUSS() {
-  let instance = null
-  try {
-    instance = await initInstance()
-  } catch (e) {}
-
   let bduss = process.env.BDUSS || []
-  try {
-    if (instance) bduss = await getEnv(instance, 'BDUSS')
-  } catch (e) {}
-
   let bdussArray = []
 
   if (Array.isArray(bduss)) bdussArray = bduss
@@ -109,13 +100,12 @@ async function getBDUSS() {
   }
 
   return {
-    instance,
     bdussArray
   }
 }
 
 !(async () => {
-  const { instance, bdussArray } = await getBDUSS()
+  const { bdussArray } = await getBDUSS()
 
   const message = []
   let index = 1
