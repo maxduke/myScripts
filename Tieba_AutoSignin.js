@@ -3,7 +3,6 @@ cron "11 8,9 * * *" Tieba_AUtoSignin.js, tag=Tieba签到
 */
 
 const axios = require('axios')
-const { getEnv } = require('./qlApi.js')
 const notify = require('./sendNotify')
 
 //签到列表
