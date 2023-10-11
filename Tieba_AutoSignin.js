@@ -112,7 +112,7 @@ async function getBDUSS() {
   for await (bduss of bdussArray) {
     let remarks = bduss.remarks || `账号${index}`
     try {
-      const sendMessage = await signTieBa(bduss.value, remarks)
+      const sendMessage = await signTieBa(bduss, remarks)
       console.log(sendMessage)
       console.log('\n')
       message.push(sendMessage)
